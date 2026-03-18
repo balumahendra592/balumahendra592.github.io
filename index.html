@@ -1,0 +1,411 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8"/>
+  <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+  <title>Regeti Bala Murali Krishna — DevOps & AI Developer</title>
+  <link href="https://fonts.googleapis.com/css2?family=DM+Serif+Display:ital@0;1&family=DM+Mono:wght@300;400;500&family=DM+Sans:opsz,wght@9..40,300;9..40,400;9..40,500&display=swap" rel="stylesheet"/>
+  <style>
+    *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
+    :root {
+      --bg: #f8f6f1; --ink: #18160f; --ink-soft: #6e6a60;
+      --accent: #c8500a; --accent-light: #f2e8df;
+      --border: #e3dfd7; --card: #ffffff;
+      --mono: 'DM Mono', monospace;
+      --sans: 'DM Sans', sans-serif;
+      --serif: 'DM Serif Display', serif;
+    }
+    html { scroll-behavior: smooth; }
+    body { background: var(--bg); color: var(--ink); font-family: var(--sans); font-weight: 300; line-height: 1.75; overflow-x: hidden; }
+
+    /* NAV */
+    nav { position: fixed; top: 0; left: 0; right: 0; z-index: 100; display: flex; align-items: center; justify-content: space-between; padding: 1.2rem 5vw; background: rgba(248,246,241,0.93); backdrop-filter: blur(14px); border-bottom: 1px solid var(--border); }
+    .nav-logo { font-family: var(--mono); font-size: 0.82rem; letter-spacing: 0.06em; color: var(--ink); text-decoration: none; }
+    .nav-logo span { color: var(--accent); }
+    .nav-links { display: flex; gap: 2rem; list-style: none; }
+    .nav-links a { font-family: var(--mono); font-size: 0.75rem; letter-spacing: 0.09em; text-transform: uppercase; color: var(--ink-soft); text-decoration: none; transition: color 0.2s; }
+    .nav-links a:hover { color: var(--accent); }
+    .nav-cta { font-family: var(--mono); font-size: 0.75rem; letter-spacing: 0.07em; text-transform: uppercase; background: var(--accent); color: #fff; padding: 0.5rem 1.2rem; border-radius: 2px; text-decoration: none; transition: opacity 0.2s; }
+    .nav-cta:hover { opacity: 0.85; }
+
+    /* HERO */
+    #hero { min-height: 100vh; display: flex; align-items: center; padding: 9rem 5vw 5rem; position: relative; overflow: hidden; }
+    .hero-grid-bg { position: absolute; inset: 0; z-index: 0; background-image: linear-gradient(var(--border) 1px, transparent 1px), linear-gradient(90deg, var(--border) 1px, transparent 1px); background-size: 48px 48px; opacity: 0.5; }
+    .hero-inner { position: relative; z-index: 1; display: grid; grid-template-columns: 1fr auto; gap: 4rem; align-items: center; width: 100%; max-width: 1100px; }
+    .hero-content { max-width: 640px; }
+    .hero-tag { display: inline-block; font-family: var(--mono); font-size: 0.75rem; letter-spacing: 0.12em; text-transform: uppercase; color: var(--accent); background: var(--accent-light); padding: 0.3rem 0.9rem; border-radius: 2px; margin-bottom: 1.8rem; opacity: 0; animation: fadeUp 0.6s 0.1s forwards; }
+    h1 { font-family: var(--serif); font-size: clamp(2.8rem, 6vw, 5rem); font-weight: 400; line-height: 1.1; letter-spacing: -0.01em; margin-bottom: 1.5rem; opacity: 0; animation: fadeUp 0.6s 0.25s forwards; }
+    h1 em { font-style: italic; color: var(--accent); }
+    .hero-bio { font-size: 1.05rem; color: var(--ink-soft); margin-bottom: 2.5rem; opacity: 0; animation: fadeUp 0.6s 0.4s forwards; }
+    .hero-actions { display: flex; gap: 1rem; flex-wrap: wrap; opacity: 0; animation: fadeUp 0.6s 0.55s forwards; }
+    .btn-primary { font-family: var(--mono); font-size: 0.8rem; letter-spacing: 0.07em; text-transform: uppercase; background: var(--ink); color: var(--bg); padding: 0.85rem 2rem; border-radius: 2px; text-decoration: none; transition: background 0.2s; }
+    .btn-primary:hover { background: var(--accent); }
+    .btn-secondary { font-family: var(--mono); font-size: 0.8rem; letter-spacing: 0.07em; text-transform: uppercase; border: 1px solid var(--border); color: var(--ink); padding: 0.85rem 2rem; border-radius: 2px; text-decoration: none; transition: border-color 0.2s, color 0.2s; }
+    .btn-secondary:hover { border-color: var(--accent); color: var(--accent); }
+    .hero-stats { display: flex; gap: 2.5rem; margin-top: 3.5rem; padding-top: 2rem; border-top: 1px solid var(--border); opacity: 0; animation: fadeUp 0.6s 0.7s forwards; flex-wrap: wrap; }
+    .stat-num { font-family: var(--serif); font-size: 2.2rem; color: var(--ink); line-height: 1; }
+    .stat-label { font-family: var(--mono); font-size: 0.7rem; letter-spacing: 0.08em; text-transform: uppercase; color: var(--ink-soft); margin-top: 0.3rem; }
+
+    /* PROFILE PHOTO */
+    .hero-photo-wrap { opacity: 0; animation: fadeUp 0.6s 0.3s forwards; flex-shrink: 0; }
+    .hero-photo-frame { width: 260px; height: 320px; border-radius: 4px; overflow: hidden; border: 1px solid var(--border); position: relative; background: var(--accent-light); }
+    .hero-photo-frame img { width: 100%; height: 100%; object-fit: cover; display: block; }
+    .hero-photo-placeholder { width: 100%; height: 100%; display: flex; flex-direction: column; align-items: center; justify-content: center; gap: 0.75rem; color: var(--accent); }
+    .hero-photo-placeholder .icon { font-size: 3rem; }
+    .hero-photo-placeholder p { font-family: var(--mono); font-size: 0.7rem; letter-spacing: 0.08em; text-transform: uppercase; color: var(--ink-soft); text-align: center; padding: 0 1rem; }
+    .hero-photo-frame::after { content: ''; position: absolute; bottom: 0; left: 0; right: 0; height: 60px; background: linear-gradient(transparent, rgba(248,246,241,0.4)); pointer-events: none; }
+
+    /* SECTIONS */
+    section { padding: 6rem 5vw; }
+    .section-label { font-family: var(--mono); font-size: 0.72rem; letter-spacing: 0.14em; text-transform: uppercase; color: var(--accent); margin-bottom: 0.75rem; }
+    h2 { font-family: var(--serif); font-size: clamp(2rem, 4vw, 3rem); font-weight: 400; line-height: 1.2; margin-bottom: 3rem; }
+
+    /* SKILLS */
+    #skills { background: var(--card); border-top: 1px solid var(--border); border-bottom: 1px solid var(--border); }
+    .skills-grid { display: grid; grid-template-columns: repeat(auto-fit, minmax(240px, 1fr)); gap: 1.5rem; }
+    .skill-card { padding: 1.75rem; border: 1px solid var(--border); border-radius: 4px; transition: border-color 0.2s, box-shadow 0.2s; }
+    .skill-card:hover { border-color: var(--accent); box-shadow: 0 4px 24px rgba(200,80,10,0.07); }
+    .skill-icon { font-size: 1.6rem; margin-bottom: 0.9rem; }
+    .skill-title { font-family: var(--mono); font-size: 0.78rem; letter-spacing: 0.08em; text-transform: uppercase; color: var(--ink); margin-bottom: 0.75rem; }
+    .skill-tags { display: flex; flex-wrap: wrap; gap: 0.4rem; }
+    .tag { font-family: var(--mono); font-size: 0.68rem; background: var(--accent-light); color: var(--accent); padding: 0.2rem 0.6rem; border-radius: 2px; }
+    .tag.dark { background: #efefed; color: var(--ink-soft); }
+
+    /* PROJECTS */
+    #projects { background: var(--bg); }
+    .projects-grid { display: grid; grid-template-columns: repeat(auto-fit, minmax(300px, 1fr)); gap: 1.5rem; }
+    .project-card { background: var(--card); border: 1px solid var(--border); border-radius: 4px; padding: 2rem; transition: transform 0.2s; position: relative; overflow: hidden; }
+    .project-card::before { content: ''; position: absolute; top: 0; left: 0; right: 0; height: 3px; background: var(--accent); transform: scaleX(0); transform-origin: left; transition: transform 0.3s; }
+    .project-card:hover { transform: translateY(-3px); }
+    .project-card:hover::before { transform: scaleX(1); }
+    .project-num { font-family: var(--mono); font-size: 0.68rem; letter-spacing: 0.1em; color: var(--accent); margin-bottom: 0.75rem; }
+    .project-title { font-family: var(--serif); font-size: 1.35rem; margin-bottom: 0.4rem; }
+    .project-role { font-family: var(--mono); font-size: 0.7rem; letter-spacing: 0.06em; text-transform: uppercase; color: var(--ink-soft); margin-bottom: 0.9rem; }
+    .project-desc { font-size: 0.88rem; color: var(--ink-soft); line-height: 1.65; margin-bottom: 1.25rem; }
+    .project-tags { display: flex; flex-wrap: wrap; gap: 0.4rem; }
+
+    /* PRODUCT */
+    #product { background: var(--ink); color: var(--bg); }
+    #product .section-label { color: #e07040; }
+    #product h2 { color: var(--bg); }
+    .product-card { display: grid; grid-template-columns: 1fr 1fr; gap: 4rem; align-items: center; background: rgba(255,255,255,0.04); border: 1px solid rgba(255,255,255,0.1); border-radius: 4px; padding: 3rem; }
+    .product-badge { display: inline-block; font-family: var(--mono); font-size: 0.72rem; letter-spacing: 0.1em; text-transform: uppercase; background: var(--accent); color: #fff; padding: 0.3rem 0.9rem; border-radius: 2px; margin-bottom: 1.2rem; }
+    .product-title { font-family: var(--serif); font-size: 2rem; color: var(--bg); margin-bottom: 1rem; line-height: 1.2; }
+    .product-desc { font-size: 0.92rem; color: rgba(248,246,241,0.65); margin-bottom: 2rem; line-height: 1.7; }
+    .product-features { list-style: none; margin-bottom: 2rem; }
+    .product-features li { font-family: var(--mono); font-size: 0.78rem; color: rgba(248,246,241,0.75); padding: 0.5rem 0; border-bottom: 1px solid rgba(255,255,255,0.07); display: flex; align-items: center; gap: 0.75rem; }
+    .product-features li::before { content: '→'; color: var(--accent); }
+    .product-price { font-family: var(--serif); font-size: 3.5rem; color: var(--bg); line-height: 1; margin-bottom: 1.5rem; }
+    .product-price span { font-family: var(--mono); font-size: 1rem; color: rgba(248,246,241,0.5); }
+    .btn-gumroad { display: inline-block; font-family: var(--mono); font-size: 0.82rem; letter-spacing: 0.07em; text-transform: uppercase; background: var(--accent); color: #fff; padding: 1rem 2.5rem; border-radius: 2px; text-decoration: none; transition: opacity 0.2s; }
+    .btn-gumroad:hover { opacity: 0.85; }
+    .product-visual { display: flex; flex-direction: column; gap: 1rem; }
+    .code-block { background: rgba(0,0,0,0.4); border-radius: 4px; padding: 1.25rem 1.5rem; font-family: var(--mono); font-size: 0.76rem; color: rgba(248,246,241,0.7); line-height: 1.9; border: 1px solid rgba(255,255,255,0.07); }
+    .cg { color: #7ec8a4; } .co { color: #e8a87c; } .cb { color: #7ab8e8; } .cd { color: rgba(248,246,241,0.3); }
+
+    /* CONTACT */
+    #contact { background: var(--bg); }
+    .contact-grid { display: grid; grid-template-columns: 1fr 1fr; gap: 4rem; align-items: start; }
+    .contact-info p { font-size: 1rem; color: var(--ink-soft); margin-bottom: 2rem; }
+    .contact-links { display: flex; flex-direction: column; gap: 0.9rem; }
+    .contact-link { display: flex; align-items: center; gap: 1rem; font-family: var(--mono); font-size: 0.8rem; color: var(--ink); text-decoration: none; padding: 0.9rem 1.25rem; border: 1px solid var(--border); border-radius: 2px; transition: border-color 0.2s, color 0.2s; }
+    .contact-link:hover { border-color: var(--accent); color: var(--accent); }
+    .contact-form { display: flex; flex-direction: column; gap: 1.25rem; }
+    .form-group { display: flex; flex-direction: column; gap: 0.4rem; }
+    .form-label { font-family: var(--mono); font-size: 0.72rem; letter-spacing: 0.08em; text-transform: uppercase; color: var(--ink-soft); }
+    .form-input, .form-textarea { font-family: var(--sans); font-size: 0.95rem; background: var(--card); color: var(--ink); border: 1px solid var(--border); border-radius: 2px; padding: 0.85rem 1rem; outline: none; transition: border-color 0.2s; }
+    .form-input:focus, .form-textarea:focus { border-color: var(--accent); }
+    .form-textarea { resize: vertical; min-height: 130px; }
+    .btn-send { font-family: var(--mono); font-size: 0.8rem; letter-spacing: 0.07em; text-transform: uppercase; background: var(--accent); color: #fff; border: none; padding: 1rem 2rem; border-radius: 2px; cursor: pointer; transition: opacity 0.2s; align-self: flex-start; }
+    .btn-send:hover { opacity: 0.85; }
+
+    /* FOOTER */
+    footer { padding: 2rem 5vw; border-top: 1px solid var(--border); display: flex; align-items: center; justify-content: space-between; flex-wrap: wrap; gap: 1rem; }
+    .footer-text { font-family: var(--mono); font-size: 0.72rem; letter-spacing: 0.06em; color: var(--ink-soft); }
+    .footer-text span { color: var(--accent); }
+
+    /* ANIMATIONS */
+    @keyframes fadeUp { from { opacity: 0; transform: translateY(20px); } to { opacity: 1; transform: translateY(0); } }
+    .reveal { opacity: 0; transform: translateY(24px); transition: opacity 0.6s, transform 0.6s; }
+    .reveal.visible { opacity: 1; transform: translateY(0); }
+
+    /* RESPONSIVE */
+    @media (max-width: 900px) {
+      .hero-inner { grid-template-columns: 1fr; }
+      .hero-photo-wrap { display: none; }
+      .product-card { grid-template-columns: 1fr; gap: 2rem; }
+      .contact-grid { grid-template-columns: 1fr; gap: 2.5rem; }
+    }
+    @media (max-width: 600px) {
+      .nav-links, .nav-cta { display: none; }
+      .hero-stats { gap: 1.5rem; }
+    }
+  </style>
+</head>
+<body>
+
+<!-- NAV -->
+<nav>
+  <a class="nav-logo" href="#hero">rbmk<span>.</span>dev</a>
+  <ul class="nav-links">
+    <li><a href="#skills">Skills</a></li>
+    <li><a href="#projects">Projects</a></li>
+    <li><a href="#product">Product</a></li>
+    <li><a href="#contact">Contact</a></li>
+  </ul>
+  <a class="nav-cta" href="#contact">Hire Me</a>
+</nav>
+
+<!-- HERO -->
+<section id="hero">
+  <div class="hero-grid-bg"></div>
+  <div class="hero-inner">
+    <div class="hero-content">
+      <div class="hero-tag">Available for freelance &amp; remote work</div>
+      <h1>Regeti Bala<br/><em>Murali Krishna</em></h1>
+      <p class="hero-bio">
+        Software Developer with 4+ years building Flutter mobile apps, Python Flask backends,
+        and production DevOps pipelines. I ship AI-powered products that scale.
+      </p>
+      <div class="hero-actions">
+        <a class="btn-primary" href="#projects">View Projects</a>
+        <a class="btn-secondary" href="#contact">Get in Touch</a>
+      </div>
+      <div class="hero-stats">
+        <div><div class="stat-num">4+</div><div class="stat-label">Years Experience</div></div>
+        <div><div class="stat-num">5+</div><div class="stat-label">Products Shipped</div></div>
+        <div><div class="stat-num">10</div><div class="stat-label">Devs Led</div></div>
+        <div><div class="stat-num">3</div><div class="stat-label">AI Models Integrated</div></div>
+      </div>
+    </div>
+    <!-- PROFILE PHOTO — replace src with your photo URL or base64 -->
+    <!-- <div class="hero-photo-wrap">
+      <div class="hero-photo-frame" id="photoFrame">
+        <div class="hero-photo-placeholder" id="photoPlaceholder">
+          <div class="icon">👤</div>
+          <p>Upload your photo to replace this</p>
+        </div>
+      </div>
+    </div> -->
+  </div>
+</section>
+
+<!-- SKILLS -->
+<section id="skills">
+  <div class="section-label reveal">Technical Skills</div>
+  <h2 class="reveal">What I Build With</h2>
+  <div class="skills-grid">
+    <div class="skill-card reveal">
+      <div class="skill-icon">📱</div>
+      <div class="skill-title">Frontend & Mobile</div>
+      <div class="skill-tags">
+        <span class="tag">Flutter</span><span class="tag dark">Dart</span><span class="tag dark">Figma MCP</span><span class="tag dark">Play Store</span><span class="tag dark">App Store</span>
+      </div>
+    </div>
+    <div class="skill-card reveal">
+      <div class="skill-icon">🐍</div>
+      <div class="skill-title">Backend</div>
+      <div class="skill-tags">
+        <span class="tag">Python Flask</span><span class="tag dark">REST APIs</span><span class="tag dark">RabbitMQ</span><span class="tag dark">Socket.IO</span><span class="tag dark">PostgreSQL</span><span class="tag dark">MongoDB</span>
+      </div>
+    </div>
+    <div class="skill-card reveal">
+      <div class="skill-icon">⚙️</div>
+      <div class="skill-title">DevOps & Cloud</div>
+      <div class="skill-tags">
+        <span class="tag">Docker</span><span class="tag">Kubernetes</span><span class="tag dark">AWS EC2/S3</span><span class="tag dark">Nginx</span><span class="tag dark">GitHub Actions</span><span class="tag dark">Cloudflare</span><span class="tag dark">MinIO</span>
+      </div>
+    </div>
+    <div class="skill-card reveal">
+      <div class="skill-icon">🤖</div>
+      <div class="skill-title">AI Integration</div>
+      <div class="skill-tags">
+        <span class="tag">Claude Sonnet</span><span class="tag">OpenAI GPT</span><span class="tag dark">Gemini</span><span class="tag dark">Elasticsearch MCP</span><span class="tag dark">Kubernetes MCP</span>
+      </div>
+    </div>
+    <div class="skill-card reveal">
+      <div class="skill-icon">📊</div>
+      <div class="skill-title">Observability</div>
+      <div class="skill-tags">
+        <span class="tag">Elasticsearch</span><span class="tag dark">Logstash</span><span class="tag dark">Kibana</span><span class="tag dark">Prometheus</span><span class="tag dark">Grafana</span>
+      </div>
+    </div>
+    <div class="skill-card reveal">
+      <div class="skill-icon">🔗</div>
+      <div class="skill-title">Integrations</div>
+      <div class="skill-tags">
+        <span class="tag dark">Slack</span><span class="tag dark">WhatsApp</span><span class="tag dark">Telegram</span><span class="tag dark">Payment Gateways</span><span class="tag dark">Social Media APIs</span>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- PROJECTS -->
+<section id="projects">
+  <div class="section-label reveal">Work</div>
+  <h2 class="reveal">Projects I've Built</h2>
+  <div class="projects-grid">
+    <div class="project-card reveal">
+      <div class="project-num">01</div>
+      <div class="project-title">A3Tunes</div>
+      <div class="project-role">Team Leader · Backend · DevOps</div>
+      <p class="project-desc">End-to-end music distribution platform. Led a team of 10, designed microservices architecture, integrated AI for music metadata tagging and recommendations, deployed on Kubernetes with full ELK monitoring.</p>
+      <div class="project-tags"><span class="tag">Python Flask</span><span class="tag dark">Kubernetes</span><span class="tag dark">Docker</span><span class="tag dark">ELK Stack</span><span class="tag dark">AI Models</span></div>
+    </div>
+    <div class="project-card reveal">
+      <div class="project-num">02</div>
+      <div class="project-title">CapeForHealth</div>
+      <div class="project-role">Mobile Application Developer</div>
+      <p class="project-desc">Mental health platform (Creative Arts For Processing Emotions®). Flutter app with social login, payment integration, multi-phase assessments, mental health activity charts, and subscription plans.</p>
+      <div class="project-tags"><span class="tag">Flutter</span><span class="tag dark">Payment Gateway</span><span class="tag dark">Social Login</span><span class="tag dark">Dashboards</span></div>
+    </div>
+    <div class="project-card reveal">
+      <div class="project-num">03</div>
+      <div class="project-title">ORM Tool</div>
+      <div class="project-role">Online Reputation Management</div>
+      <p class="project-desc">Integrated 9+ social media platforms for brand monitoring. Automated ticket creation, direct response workflows, and monthly/quarterly/yearly client reports for enterprise organisations.</p>
+      <div class="project-tags"><span class="tag">Python</span><span class="tag dark">Twitter</span><span class="tag dark">YouTube</span><span class="tag dark">Instagram</span><span class="tag dark">LinkedIn</span></div>
+    </div>
+    <div class="project-card reveal">
+      <div class="project-num">04</div>
+      <div class="project-title">Anti-Piracy Tools</div>
+      <div class="project-role">Backend Developer</div>
+      <p class="project-desc">Automated piracy detection system. Scheduled crawlers identify unauthorized content, integrate with CRM tools, and trigger takedown workflows for content protection at scale.</p>
+      <div class="project-tags"><span class="tag">Python</span><span class="tag dark">Schedulers</span><span class="tag dark">CRM Integration</span><span class="tag dark">Web Crawling</span></div>
+    </div>
+    <div class="project-card reveal">
+      <div class="project-num">05</div>
+      <div class="project-title">YouTube Monitor</div>
+      <div class="project-role">Backend Developer</div>
+      <p class="project-desc">Continuous monitoring for piracy URLs on YouTube. Scheduled status checks, automated reporting, links tracked until takedown confirmed.</p>
+      <div class="project-tags"><span class="tag">Python</span><span class="tag dark">YouTube API</span><span class="tag dark">Automation</span><span class="tag dark">Scheduling</span></div>
+    </div>
+    <div class="project-card reveal">
+      <div class="project-num">06</div>
+      <div class="project-title">Flask AI DevOps Starter</div>
+      <div class="project-role">Creator · Digital Product</div>
+      <p class="project-desc">Production-ready boilerplate combining Flask, Docker, GitHub Actions CI/CD, and Claude AI integration. Helping developers ship AI-powered backends faster.</p>
+      <div class="project-tags"><span class="tag">Flask</span><span class="tag dark">Docker</span><span class="tag dark">GitHub Actions</span><span class="tag dark">Claude AI</span></div>
+    </div>
+  </div>
+</section>
+
+<!-- PRODUCT -->
+<section id="product">
+  <div class="section-label reveal">Digital Product</div>
+  <h2 class="reveal">Available on Gumroad</h2>
+  <div class="product-card reveal">
+    <div>
+      <div class="product-badge">New Launch</div>
+      <div class="product-title">Flask AI DevOps<br/>Starter Kit</div>
+      <p class="product-desc">Stop rebuilding the same DevOps stack for every AI project. This production-ready template gets your Flask + AI backend live in minutes with full CI/CD.</p>
+      <ul class="product-features">
+        <li>Flask 3.1 with modular blueprint structure</li>
+        <li>Claude AI integration (swap to OpenAI in 2 lines)</li>
+        <li>Multi-stage Dockerfile — non-root, production-grade</li>
+        <li>GitHub Actions: test → build → SSH deploy</li>
+        <li>docker-compose for one-command local run</li>
+        <li>Pytest test suite included</li>
+      </ul>
+      <div class="product-price">$19 <span>one-time</span></div>
+      <a class="btn-gumroad" href="https://gumroad.com" target="_blank">Get It on Gumroad →</a>
+    </div>
+    <div class="product-visual">
+      <div class="code-block">
+        <span class="cd"># Clone & run in 3 commands</span><br/>
+        <span class="cg">git clone</span> flask-ai-devops-starter<br/>
+        <span class="cb">cp</span> .env.example .env<br/>
+        <span class="co">docker-compose up</span> --build
+      </div>
+      <div class="code-block">
+        <span class="cd"># CI/CD auto-runs on push</span><br/>
+        <span class="cg">✓</span> pytest tests/ <span class="cd">— passed</span><br/>
+        <span class="cg">✓</span> docker build <span class="cd">— pushed</span><br/>
+        <span class="cg">✓</span> ssh deploy <span class="cd">— live 🚀</span>
+      </div>
+      <div class="code-block">
+        <span class="cd"># AI endpoint ready</span><br/>
+        <span class="cb">POST</span> /ai/ask<br/>
+        <span class="co">{</span> <span class="cg">"prompt"</span>: <span class="cb">"your query"</span> <span class="co">}</span><br/>
+        <span class="cd">→ Claude responds instantly</span>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- CONTACT -->
+<section id="contact">
+  <div class="section-label reveal">Contact</div>
+  <h2 class="reveal">Let's Work Together</h2>
+  <div class="contact-grid">
+    <div class="contact-info reveal">
+      <p>Open to freelance projects, remote contracts, and consulting in DevOps, Python Flask backends, Flutter mobile apps, and AI integrations.</p>
+      <div class="contact-links">
+        <a class="contact-link" href="mailto:balumahendra592@gmail.com">✉️ &nbsp;balumahendra592@gmail.com</a>
+        <a class="contact-link" href="tel:+918639094240">📞 &nbsp;+91 86390 94240</a>
+        <a class="contact-link" href="https://github.com/balumahendra592" target="_blank">🐙 &nbsp;github.com/balumahendra592</a>
+        <a class="contact-link" href="#">💼 &nbsp;LinkedIn Profile</a>
+      </div>
+    </div>
+    <div class="contact-form reveal">
+      <div class="form-group">
+        <label class="form-label">Your Name</label>
+        <input class="form-input" type="text" placeholder="John Doe"/>
+      </div>
+      <div class="form-group">
+        <label class="form-label">Email</label>
+        <input class="form-input" type="email" placeholder="john@example.com"/>
+      </div>
+      <div class="form-group">
+        <label class="form-label">Message</label>
+        <textarea class="form-textarea" placeholder="Tell me about your project..."></textarea>
+      </div>
+      <button class="btn-send" onclick="alert('Thanks! I will get back to you soon.')">Send Message →</button>
+    </div>
+  </div>
+</section>
+
+<!-- FOOTER -->
+<footer>
+  <div class="footer-text">© 2025 Regeti Bala Murali Krishna · Made with <span>♥</span> in Rajahmundry, India</div>
+  <div class="footer-text">DevOps · Flutter · Python · AI</div>
+</footer>
+
+<script>
+  // Scroll reveal
+  const reveals = document.querySelectorAll('.reveal');
+  const observer = new IntersectionObserver((entries) => {
+    entries.forEach((e, i) => {
+      if (e.isIntersecting) {
+        setTimeout(() => e.target.classList.add('visible'), i * 80);
+        observer.unobserve(e.target);
+      }
+    });
+  }, { threshold: 0.1 });
+  reveals.forEach(el => observer.observe(el));
+
+  // Profile photo upload
+  const frame = document.getElementById('photoFrame');
+  const placeholder = document.getElementById('photoPlaceholder');
+  frame.style.cursor = 'pointer';
+  frame.title = 'Click to upload your photo';
+  frame.addEventListener('click', () => {
+    const input = document.createElement('input');
+    input.type = 'file'; input.accept = 'image/*';
+    input.onchange = (e) => {
+      const file = e.target.files[0];
+      if (!file) return;
+      const reader = new FileReader();
+      reader.onload = (ev) => {
+        placeholder.style.display = 'none';
+        let img = frame.querySelector('img');
+        if (!img) { img = document.createElement('img'); frame.appendChild(img); }
+        img.src = ev.target.result;
+      };
+      reader.readAsDataURL(file);
+    };
+    input.click();
+  });
+</script>
+</body>
+</html>
