@@ -1,0 +1,457 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>DevOps &amp; Cloud Infrastructure Consulting — Regeti Bala Murali Krishna</title>
+<meta name="description" content="I help startups and small engineering teams replace manual deployments with Docker, Kubernetes and CI/CD pipelines — then keep them running. DevOps audits, Dockerization, CI/CD setup, Kubernetes deployment and monthly production support.">
+<meta name="author" content="Regeti Bala Murali Krishna">
+<meta property="og:title" content="Regeti Bala Murali Krishna — DevOps & Cloud Infrastructure Consultant">
+<meta property="og:description" content="Docker, Kubernetes, CI/CD and cloud infrastructure for startups and small engineering teams.">
+<meta property="og:type" content="profile">
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Space+Grotesk:wght@400;500;600;700&family=Inter:wght@400;500;600;700&family=JetBrains+Mono:wght@400;500;600&display=swap" rel="stylesheet">
+<style>
+  :root{
+    --bg:#0F1419;
+    --panel:#151C24;
+    --panel-2:#1B232C;
+    --line:#2A333E;
+    --text:#E7ECF1;
+    --text-dim:#93A1AF;
+    --text-faint:#5D6B7A;
+    --signal:#F0A93B;
+    --signal-dim:#7A5A24;
+    --ok:#4FBF8B;
+    --radius:3px;
+    --max:920px;
+  }
+  *{box-sizing:border-box;margin:0;padding:0;}
+  html{scroll-behavior:smooth;}
+  body{
+    background:var(--bg);
+    color:var(--text);
+    font-family:'Inter',system-ui,sans-serif;
+    line-height:1.55;
+    font-size:16px;
+    -webkit-font-smoothing:antialiased;
+  }
+  ::selection{background:var(--signal);color:#141414;}
+  a{color:inherit;}
+  .wrap{max-width:var(--max);margin:0 auto;padding:0 24px;}
+  h1,h2,h3{font-family:'Space Grotesk',sans-serif;font-weight:600;letter-spacing:-0.01em;}
+  .mono{font-family:'JetBrains Mono',monospace;}
+
+  /* ---------- nav ---------- */
+  header{
+    position:sticky;top:0;z-index:50;
+    background:rgba(15,20,25,0.88);
+    backdrop-filter:blur(8px);
+    border-bottom:1px solid var(--line);
+  }
+  nav.wrap{
+    display:flex;align-items:center;justify-content:space-between;
+    height:64px;
+  }
+  .brand{font-family:'Space Grotesk',sans-serif;font-weight:600;font-size:1.05rem;text-decoration:none;color:var(--text);display:flex;align-items:center;gap:8px;}
+  .brand .dot{width:8px;height:8px;border-radius:50%;background:var(--signal);box-shadow:0 0 8px var(--signal);}
+  .navlinks{display:flex;gap:28px;list-style:none;font-size:0.92rem;color:var(--text-dim);}
+  .navlinks a{text-decoration:none;transition:color .15s;}
+  .navlinks a:hover{color:var(--text);}
+  .navcta{
+    font-size:0.88rem;padding:8px 16px;border:1px solid var(--line);border-radius:var(--radius);
+    text-decoration:none;color:var(--text);transition:border-color .15s, background .15s;
+  }
+  .navcta:hover{border-color:var(--signal);background:rgba(240,169,59,0.08);}
+  .navtoggle{display:none;background:none;border:none;color:var(--text);font-size:1.4rem;cursor:pointer;}
+
+  @media (max-width:720px){
+    .navlinks{
+      position:absolute;top:64px;left:0;right:0;background:var(--panel);
+      flex-direction:column;gap:0;border-bottom:1px solid var(--line);
+      max-height:0;overflow:hidden;transition:max-height .25s ease;
+    }
+    .navlinks.open{max-height:320px;}
+    .navlinks li{border-top:1px solid var(--line);}
+    .navlinks a{display:block;padding:16px 24px;}
+    .navtoggle{display:block;}
+    .navcta{display:none;}
+  }
+
+  /* ---------- hero ---------- */
+  .hero{padding:76px 0 60px;border-bottom:1px solid var(--line);}
+  .hero-grid{display:grid;grid-template-columns:1.1fr 1fr;gap:56px;align-items:center;}
+  @media (max-width:860px){.hero-grid{grid-template-columns:1fr;gap:40px;}}
+  .hero h1{font-size:clamp(2rem,4.2vw,2.9rem);line-height:1.14;margin-bottom:20px;}
+  .hero p.lede{color:var(--text-dim);font-size:1.08rem;max-width:46ch;margin-bottom:32px;}
+  .hero-ctas{display:flex;gap:14px;flex-wrap:wrap;}
+  .btn{
+    display:inline-block;padding:13px 24px;border-radius:var(--radius);font-size:0.95rem;
+    text-decoration:none;font-weight:500;transition:transform .12s, background .15s, border-color .15s;
+  }
+  .btn-primary{background:var(--signal);color:#181000;}
+  .btn-primary:hover{background:#ffb84f;}
+  .btn-ghost{border:1px solid var(--line);color:var(--text);}
+  .btn-ghost:hover{border-color:var(--text-dim);}
+
+  /* pipeline diagram */
+  .pipeline{
+    background:var(--panel);border:1px solid var(--line);border-radius:6px;padding:26px 22px;
+  }
+  .pipeline-label{font-size:0.75rem;color:var(--text-faint);margin-bottom:18px;letter-spacing:0.02em;}
+  .pipe-row{display:flex;align-items:center;}
+  .pipe-node{
+    font-family:'JetBrains Mono',monospace;font-size:0.78rem;color:var(--text-dim);
+    background:var(--panel-2);border:1px solid var(--line);border-radius:4px;
+    padding:9px 10px;text-align:center;flex:1;white-space:nowrap;
+    transition:border-color .3s, color .3s;
+  }
+  .pipe-node.lit{border-color:var(--signal);color:var(--text);box-shadow:0 0 0 1px rgba(240,169,59,0.25) inset;}
+  .pipe-connector{
+    flex:0 0 22px;height:2px;background:var(--line);position:relative;margin:0 2px;
+  }
+  .pipe-connector::after{
+    content:"";position:absolute;top:-1px;left:0;height:4px;width:0;background:var(--signal);
+    transition:width .35s ease;
+  }
+  .pipe-connector.lit::after{width:100%;}
+  .pipe-status{
+    margin-top:18px;padding-top:16px;border-top:1px solid var(--line);
+    display:flex;align-items:center;gap:8px;font-family:'JetBrains Mono',monospace;font-size:0.78rem;color:var(--text-faint);
+  }
+  .pipe-status .led{width:7px;height:7px;border-radius:50%;background:var(--ok);box-shadow:0 0 6px var(--ok);}
+
+  /* ---------- section shell ---------- */
+  section{padding:64px 0;border-bottom:1px solid var(--line);}
+  .section-head{margin-bottom:36px;max-width:60ch;}
+  .section-head h2{font-size:1.6rem;margin-bottom:10px;}
+  .section-head p{color:var(--text-dim);}
+
+  /* ---------- pain points ---------- */
+  .pains{display:grid;grid-template-columns:repeat(3,1fr);gap:1px;background:var(--line);border:1px solid var(--line);border-radius:6px;overflow:hidden;}
+  @media (max-width:720px){.pains{grid-template-columns:1fr;}}
+  .pain{background:var(--panel);padding:22px 20px;font-size:0.95rem;color:var(--text-dim);}
+  .pain span{display:block;font-family:'JetBrains Mono',monospace;color:var(--text-faint);font-size:0.75rem;margin-bottom:8px;}
+
+  /* ---------- services ---------- */
+  .service{
+    display:grid;grid-template-columns:220px 1fr auto;gap:24px;align-items:start;
+    padding:26px 0;border-top:1px solid var(--line);
+  }
+  .service:first-of-type{border-top:none;}
+  @media (max-width:720px){.service{grid-template-columns:1fr;gap:8px;}}
+  .service h3{font-size:1.08rem;font-weight:600;}
+  .service .desc{color:var(--text-dim);font-size:0.95rem;}
+  .service .desc ul{margin-top:6px;padding-left:18px;}
+  .service .price{font-family:'JetBrains Mono',monospace;font-size:0.92rem;color:var(--signal);white-space:nowrap;text-align:right;}
+  @media (max-width:720px){.service .price{text-align:left;}}
+
+  /* ---------- pricing table ---------- */
+  table.pricing{width:100%;border-collapse:collapse;font-size:0.95rem;}
+  table.pricing th{
+    text-align:left;font-weight:500;color:var(--text-faint);font-size:0.78rem;
+    padding:0 0 12px;border-bottom:1px solid var(--line);
+  }
+  table.pricing td{padding:15px 0;border-bottom:1px solid var(--line);color:var(--text-dim);}
+  table.pricing tr td:first-child{color:var(--text);}
+  table.pricing td:last-child{font-family:'JetBrains Mono',monospace;color:var(--signal);text-align:right;}
+  table.pricing tr:last-child td{border-bottom:none;}
+  .pricing-note{margin-top:16px;font-size:0.85rem;color:var(--text-faint);}
+
+  /* ---------- process ---------- */
+  .process{display:grid;grid-template-columns:repeat(3,1fr);gap:28px;}
+  @media (max-width:720px){.process{grid-template-columns:1fr;}}
+  .proc-step{position:relative;padding-left:40px;}
+  .proc-step .n{
+    position:absolute;left:0;top:0;width:26px;height:26px;border:1px solid var(--line);border-radius:50%;
+    display:flex;align-items:center;justify-content:center;font-family:'JetBrains Mono',monospace;font-size:0.78rem;color:var(--text-dim);
+  }
+  .proc-step h3{font-size:1.02rem;margin-bottom:6px;}
+  .proc-step p{color:var(--text-dim);font-size:0.93rem;}
+
+  /* ---------- about / credibility ---------- */
+  .about-grid{display:grid;grid-template-columns:1fr 1fr;gap:48px;}
+  @media (max-width:720px){.about-grid{grid-template-columns:1fr;}}
+  .about-grid p{color:var(--text-dim);margin-bottom:14px;}
+  .stack-tags{display:flex;flex-wrap:wrap;gap:8px;margin-top:8px;}
+  .tag{
+    font-family:'JetBrains Mono',monospace;font-size:0.78rem;color:var(--text-dim);
+    border:1px solid var(--line);border-radius:4px;padding:5px 10px;
+  }
+
+  /* ---------- contact ---------- */
+  .contact-grid{display:grid;grid-template-columns:1.1fr 1fr;gap:48px;}
+  @media (max-width:720px){.contact-grid{grid-template-columns:1fr;}}
+  .contact-list{list-style:none;margin-top:20px;}
+  .contact-list li{padding:12px 0;border-top:1px solid var(--line);font-size:0.95rem;}
+  .contact-list li:first-child{border-top:none;}
+  .contact-list a{text-decoration:none;color:var(--text);}
+  .contact-list a:hover{color:var(--signal);}
+  .contact-list .k{color:var(--text-faint);font-family:'JetBrains Mono',monospace;font-size:0.75rem;display:block;margin-bottom:3px;}
+
+  footer{padding:32px 0;}
+  footer .wrap{display:flex;justify-content:space-between;align-items:center;flex-wrap:wrap;gap:12px;}
+  footer p{color:var(--text-faint);font-size:0.85rem;}
+</style>
+</head>
+<body>
+
+<header>
+  <nav class="wrap">
+    <a href="https://balumahendra592.github.io/" class="brand"><span class="dot"></span>rbmk / devops</a>
+    <ul class="navlinks" id="navlinks">
+      <li><a href="#services">Services</a></li>
+      <li><a href="#pricing">Pricing</a></li>
+      <li><a href="#process">Process</a></li>
+      <li><a href="#about">About</a></li>
+      <li><a href="#contact">Contact</a></li>
+    </ul>
+    <a href="#contact" class="navcta">Book a call</a>
+    <button class="navtoggle" id="navtoggle" aria-label="Toggle menu">☰</button>
+  </nav>
+</header>
+
+<main id="top">
+
+  <!-- HERO -->
+  <section class="hero" style="border-bottom:1px solid var(--line);padding-top:76px;">
+    <div class="wrap hero-grid">
+      <div>
+        <h1>Ship deployments without the 2&nbsp;a.m.&nbsp;page.</h1>
+        <p class="lede">I help startups and small engineering teams replace manual deployments and fragile servers with Docker, Kubernetes and CI/CD pipelines — then stay on as the person who keeps them running.</p>
+        <div class="hero-ctas">
+          <a href="#contact" class="btn btn-primary">Book a 15-minute infra call</a>
+          <a href="#services" class="btn btn-ghost">See services &amp; pricing</a>
+        </div>
+      </div>
+      <div class="pipeline">
+        <div class="pipeline-label mono">deploy.yml — current run</div>
+        <div class="pipe-row" id="pipeRow">
+          <div class="pipe-node" data-i="0">git push</div>
+          <div class="pipe-connector" data-i="0"></div>
+          <div class="pipe-node" data-i="1">ci build</div>
+          <div class="pipe-connector" data-i="1"></div>
+          <div class="pipe-node" data-i="2">docker</div>
+          <div class="pipe-connector" data-i="2"></div>
+          <div class="pipe-node" data-i="3">registry</div>
+          <div class="pipe-connector" data-i="3"></div>
+          <div class="pipe-node" data-i="4">prod</div>
+        </div>
+        <div class="pipe-status"><span class="led"></span><span id="pipeStatus">deploy triggered</span></div>
+      </div>
+    </div>
+  </section>
+
+  <!-- PAIN POINTS -->
+  <section style="padding:48px 0 64px;">
+    <div class="wrap">
+      <div class="section-head" style="margin-bottom:28px;">
+        <h2 style="font-size:1.25rem;color:var(--text-dim);font-weight:500;">If any of this sounds familiar, we should talk:</h2>
+      </div>
+      <div class="pains">
+        <div class="pain"><span>01</span>Deployments take an SSH session and a prayer, not a pipeline.</div>
+        <div class="pain"><span>02</span>Nobody finds out production is down until a customer says so.</div>
+        <div class="pain"><span>03</span>Kubernetes is running, but nobody's fully sure how it's configured.</div>
+      </div>
+    </div>
+  </section>
+
+  <!-- SERVICES -->
+  <section id="services">
+    <div class="wrap">
+      <div class="section-head">
+        <h2>What I do</h2>
+        <p>Fixed-scope projects to get your infrastructure under control, priced by complexity — not by the hour.</p>
+      </div>
+
+      <div class="service">
+        <h3>Dockerization</h3>
+        <div class="desc">For teams still deploying manually. Dockerfile, Compose setup, container optimization, environment config and deployment docs.</div>
+        <div class="price">₹15k – ₹35k</div>
+      </div>
+
+      <div class="service">
+        <h3>CI/CD setup</h3>
+        <div class="desc">Push-to-deploy pipelines: build → test → image → registry → server, on GitHub Actions, GitLab CI or Jenkins.</div>
+        <div class="price">₹20k – ₹60k</div>
+      </div>
+
+      <div class="service">
+        <h3>Kubernetes deployment</h3>
+        <div class="desc">Deployments, services, ingress, ConfigMaps, secrets, persistent storage, health checks and rolling deploys, set up and documented.</div>
+        <div class="price">₹30k – ₹1L+</div>
+      </div>
+
+      <div class="service">
+        <h3>Cloud deployment</h3>
+        <div class="desc">Application live on AWS or your cloud of choice: server, Docker, Nginx, SSL, firewall, database connectivity and monitoring.</div>
+        <div class="price">₹25k – ₹75k</div>
+      </div>
+
+      <div class="service">
+        <h3>Production support</h3>
+        <div class="desc">Monthly retainer: monitoring, troubleshooting, SSL renewal, security checks, backup checks and incident support when things break.</div>
+        <div class="price">from ₹15k/mo</div>
+      </div>
+    </div>
+  </section>
+
+  <!-- PRICING -->
+  <section id="pricing">
+    <div class="wrap">
+      <div class="section-head">
+        <h2>Pricing guide</h2>
+        <p>Actual quotes depend on scope and current setup — this is the range most projects fall into.</p>
+      </div>
+      <table class="pricing">
+        <thead>
+          <tr><th>Service</th><th style="text-align:right;">Typical range</th></tr>
+        </thead>
+        <tbody>
+          <tr><td>DevOps audit</td><td>₹5k – ₹15k</td></tr>
+          <tr><td>Dockerization</td><td>₹15k – ₹35k</td></tr>
+          <tr><td>CI/CD setup</td><td>₹20k – ₹60k</td></tr>
+          <tr><td>AWS / cloud deployment</td><td>₹25k – ₹60k</td></tr>
+          <tr><td>Kubernetes deployment</td><td>₹30k – ₹1L+</td></tr>
+          <tr><td>Production troubleshooting</td><td>₹5k – ₹20k</td></tr>
+          <tr><td>Monthly production support</td><td>₹10k – ₹35k</td></tr>
+        </tbody>
+      </table>
+      <p class="pricing-note">Most engagements start with a small audit or fix, then move to a monthly retainer once the pipeline's stable.</p>
+    </div>
+  </section>
+
+  <!-- PROCESS -->
+  <section id="process">
+    <div class="wrap">
+      <div class="section-head">
+        <h2>How an engagement runs</h2>
+        <p>Three stages, in order — you can stop after any one of them.</p>
+      </div>
+      <div class="process">
+        <div class="proc-step">
+          <div class="n mono">1</div>
+          <h3>Audit</h3>
+          <p>I review your current infrastructure, deployment flow and monitoring, and hand you a short report: risks, gaps and a recommended architecture.</p>
+        </div>
+        <div class="proc-step">
+          <div class="n mono">2</div>
+          <h3>Fix</h3>
+          <p>A fixed-scope project to implement it — Dockerize the app, wire up CI/CD, or move the deploy onto Kubernetes. You get working infrastructure and documentation.</p>
+        </div>
+        <div class="proc-step">
+          <div class="n mono">3</div>
+          <h3>Support</h3>
+          <p>An optional monthly retainer to keep it running: monitoring, troubleshooting, security checks and incident support as your team grows.</p>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- ABOUT -->
+  <section id="about">
+    <div class="wrap about-grid">
+      <div>
+        <h2 style="font-size:1.4rem;margin-bottom:14px;">About</h2>
+        <p>I'm Bala Murali Krishna, a DevOps engineer working with production systems day to day — deployment pipelines, container orchestration, monitoring and the troubleshooting that comes with keeping applications live.</p>
+        <p>I take on independent consulting projects alongside that work, mostly with startups and small SaaS teams who need infrastructure that doesn't depend on one person remembering how it's wired together.</p>
+        <p>BTech in Computer Science (Bonam Venkata Chalamaiah Engineering College), IBM-certified in DevOps.</p>
+      </div>
+      <div>
+        <h2 style="font-size:1.4rem;margin-bottom:14px;">Tools I work with</h2>
+        <div class="stack-tags">
+          <span class="tag">Docker</span>
+          <span class="tag">Kubernetes</span>
+          <span class="tag">Jenkins</span>
+          <span class="tag">GitLab CI</span>
+          <span class="tag">GitHub Actions</span>
+          <span class="tag">AWS / EC2</span>
+          <span class="tag">Nginx</span>
+          <span class="tag">ArgoCD</span>
+          <span class="tag">RabbitMQ</span>
+          <span class="tag">Prometheus</span>
+          <span class="tag">ELK Stack</span>
+          <span class="tag">Grafana</span>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- CONTACT -->
+  <section id="contact" style="border-bottom:none;">
+    <div class="wrap contact-grid">
+      <div>
+        <h2 style="font-size:1.6rem;margin-bottom:14px;">Let's look at your setup</h2>
+        <p style="color:var(--text-dim);max-width:44ch;">Send a note about how you're deploying today — or book a free 15-minute call and I'll point out what I'd fix first, no obligation.</p>
+        <div class="hero-ctas" style="margin-top:24px;">
+          <a href="mailto:balumahendra592@gmail.com?subject=DevOps%20consulting%20inquiry" class="btn btn-primary">Email me</a>
+          <a href="tel:+918639094240" class="btn btn-ghost">Call / WhatsApp</a>
+        </div>
+      </div>
+      <ul class="contact-list">
+        <li><span class="k">email</span><a href="mailto:balumahendra592@gmail.com">balumahendra592@gmail.com</a></li>
+        <li><span class="k">phone</span><a href="tel:+918639094240">+91 86390 94240</a></li>
+        <li><span class="k">github</span><a href="https://github.com/balumahendra592" target="_blank" rel="noopener">github.com/balumahendra592</a></li>
+        <li><span class="k">linkedin</span><a href="#" target="_blank" rel="noopener">linkedin.com/in/your-profile</a></li>
+      </ul>
+    </div>
+  </section>
+
+</main>
+
+<footer>
+  <div class="wrap">
+    <p>© 2026 Regeti Bala Murali Krishna · Rajahmundry, India</p>
+    <p class="mono">status: accepting new clients</p>
+  </div>
+</footer>
+
+<script>
+  // mobile nav toggle
+  const navtoggle = document.getElementById('navtoggle');
+  const navlinks = document.getElementById('navlinks');
+  navtoggle.addEventListener('click', () => navlinks.classList.toggle('open'));
+  navlinks.querySelectorAll('a').forEach(a => a.addEventListener('click', () => navlinks.classList.remove('open')));
+
+  // single orchestrated pipeline animation, loops gently
+  (function(){
+    const nodes = document.querySelectorAll('#pipeRow .pipe-node');
+    const connectors = document.querySelectorAll('#pipeRow .pipe-connector');
+    const statusEl = document.getElementById('pipeStatus');
+    const messages = ['deploy triggered','running ci build','building image','pushing to registry','live in production'];
+    let step = 0;
+    const total = nodes.length;
+
+    function reset(){
+      nodes.forEach(n => n.classList.remove('lit'));
+      connectors.forEach(c => c.classList.remove('lit'));
+    }
+
+    function tick(){
+      reset();
+      for(let i=0;i<=step;i++){
+        if(nodes[i]) nodes[i].classList.add('lit');
+      }
+      for(let i=0;i<step;i++){
+        if(connectors[i]) connectors[i].classList.add('lit');
+      }
+      if(statusEl) statusEl.textContent = messages[Math.min(step, messages.length-1)];
+      step++;
+      if(step >= total){
+        setTimeout(()=>{ step = 0; }, 2200);
+      }
+    }
+
+    if(nodes.length && !window.matchMedia('(prefers-reduced-motion: reduce)').matches){
+      tick();
+      setInterval(tick, 900);
+    } else if (nodes.length) {
+      nodes.forEach(n => n.classList.add('lit'));
+      connectors.forEach(c => c.classList.add('lit'));
+    }
+  })();
+</script>
+
+</body>
+</html>
